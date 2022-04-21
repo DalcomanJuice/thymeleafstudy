@@ -1,11 +1,13 @@
 package hello.thymeleaf.basic;
 
 import lombok.Data;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +49,21 @@ public class BasicController {
         model.addAttribute("userMap",map);
 
         return "basic/variable";
+    }
+
+    //http session 은 유저가 종료하기 전까지 유지된다. 뒤에서 좀더 자세히 설명해준다.
+    @GetMapping("/basic-objects")
+    public String basicObjects(HttpSession session){
+        session.setAttribute("sessionData", "Hello Session");
+        return "basic/basic-objects";
+    }
+
+    //컴포넌트 보여주기 위한 예제. Bean 등록
+    @Component("helloBean")
+    public class HelloBean{
+        public String hello(String data){
+            return "Hello " + data;
+        }
     }
 
     @Data
